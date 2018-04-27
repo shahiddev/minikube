@@ -23,21 +23,24 @@ type Driver struct {
 	CPU            int
 	MacAddr        string
 	VLanID         int
+	DynamicMem     bool
 }
 
 const (
-	defaultDiskSize = 20000
-	defaultMemory   = 1024
-	defaultCPU      = 1
-	defaultVLanID   = 0
+	defaultDiskSize   = 20000
+	defaultMemory     = 1024
+	defaultCPU        = 1
+	defaultVLanID     = 0
+	defaultDynamicMem = true
 )
 
 // NewDriver creates a new Hyper-v driver with default settings.
 func NewDriver(hostName, storePath string) *Driver {
 	return &Driver{
-		DiskSize: defaultDiskSize,
-		MemSize:  defaultMemory,
-		CPU:      defaultCPU,
+		DiskSize:   defaultDiskSize,
+		MemSize:    defaultMemory,
+		CPU:        defaultCPU,
+		DynamicMem: defaultDynamicMem,
 		BaseDriver: &drivers.BaseDriver{
 			MachineName: hostName,
 			StorePath:   storePath,
@@ -88,6 +91,12 @@ func (d *Driver) GetCreateFlags() []mcnflag.Flag {
 			Value:  defaultVLanID,
 			EnvVar: "HYPERV_VLAN_ID",
 		},
+		mcnflag.IntFlag{
+			Name:   "hyperv-dynamic-memory",
+			Usage:  "Dynamic memory management setting",
+			Value:  defaultDynamicMem,
+			EnvVar: "HYPERV_DYNAMIC_MEMORY",
+		},
 	}
 }
 
@@ -99,6 +108,7 @@ func (d *Driver) SetConfigFromFlags(flags drivers.DriverOptions) error {
 	d.CPU = flags.Int("hyperv-cpu-count")
 	d.MacAddr = flags.String("hyperv-static-macaddress")
 	d.VLanID = flags.Int("hyperv-vlan-id")
+	d.DynamicMem = flags.Bool("hyperv-dynamic-memory")
 	d.SSHUser = "docker"
 	d.SetSwarmConfigFromFlags(flags)
 
@@ -234,6 +244,13 @@ func (d *Driver) Create() error {
 			"-VMName", d.MachineName,
 			"-Access",
 			"-VlanId", fmt.Sprintf("%d", d.VLanID)); err != nil {
+			return err
+		}
+	}
+	if !d.DynamicMem {
+		if err := cmd("Hyper-V\\Set-VMMemory",
+			"-VMName", d.MachineName,
+			"-DynamicMemoryEnabled", fmt.Sprintf("%t", d.DynamicMem)); err != nil {
 			return err
 		}
 	}

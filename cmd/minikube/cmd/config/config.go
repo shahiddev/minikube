@@ -225,6 +225,10 @@ var settings = []Setting{
 		set:    SetConfigMap,
 		setMap: SetMap,
 	},
+	{
+		name: "hyperv-dynamic-memory",
+		set:  SetBool,
+	},
 }
 
 var ConfigCmd = &cobra.Command{

@@ -45,6 +45,7 @@ func createHypervHost(config cfg.MachineConfig) interface{} {
 	d.MemSize = config.Memory
 	d.CPU = config.CPUs
 	d.DiskSize = int(config.DiskSize)
+	d.DynamicMem = config.HypervDynamicMemory
 	d.SSHUser = "docker"
 
 	return d

@@ -70,6 +70,7 @@ const (
 	disableDriverMounts   = "disable-driver-mounts"
 	cacheImages           = "cache-images"
 	uuid                  = "uuid"
+	hypervDynamicMemory   = "hyperv-dynamic-memory"
 )
 
 var (
@@ -148,6 +149,7 @@ func runStart(cmd *cobra.Command, args []string) {
 		Downloader:          pkgutil.DefaultDownloader{},
 		DisableDriverMounts: viper.GetBool(disableDriverMounts),
 		UUID:                viper.GetString(uuid),
+		hypervDynamicMemory: viper.GetBool(hypervDynamicMemory)
 	}
 
 	fmt.Printf("Starting local Kubernetes %s cluster...\n", viper.GetString(kubernetesVersion))

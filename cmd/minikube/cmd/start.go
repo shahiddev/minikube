@@ -401,6 +401,7 @@ func init() {
 		`A set of key=value pairs that describe configuration that may be passed to different components.
 		The key should be '.' separated, and the first part before the dot is the component to apply the configuration to.
 		Valid components are: kubelet, apiserver, controller-manager, etcd, proxy, scheduler.`)
+	startCmd.Flags().Bool(hypervDynamicMemory, true, "If true, uses dynamic memory for the Hyper-v VM, set this to false if minikube becomes unresponsive after a period of time")
 	viper.BindPFlags(startCmd.Flags())
 	RootCmd.AddCommand(startCmd)
 }

@@ -91,7 +91,7 @@ func (d *Driver) GetCreateFlags() []mcnflag.Flag {
 			Value:  defaultVLanID,
 			EnvVar: "HYPERV_VLAN_ID",
 		},
-		mcnflag.IntFlag{
+		mcnflag.BoolFlag{
 			Name:   "hyperv-dynamic-memory",
 			Usage:  "Dynamic memory management setting",
 			Value:  defaultDynamicMem,

@@ -221,13 +221,13 @@ func (d *Driver) Create() error {
 		"-MemoryStartupBytes", toMb(d.MemSize)); err != nil {
 		return err
 	}
-	log.Infof("Setting VM dynamic memory to %t...", d.DynamicMem)
+	log.Infof("Setting VM dynamic memory to %t", d.DynamicMem)
 	if err := cmd("Hyper-V\\Set-VMMemory",
 		"-VMName", d.MachineName,
 		"-DynamicMemoryEnabled", fmt.Sprintf("%t", d.DynamicMem)); err != nil {
 		return err
 	}
-
+	log.Infof("Setting VM processor...")
 	if d.CPU > 1 {
 		if err := cmd("Hyper-V\\Set-VMProcessor",
 			d.MachineName,

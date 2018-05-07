@@ -149,7 +149,8 @@ func runStart(cmd *cobra.Command, args []string) {
 		Downloader:          pkgutil.DefaultDownloader{},
 		DisableDriverMounts: viper.GetBool(disableDriverMounts),
 		UUID:                viper.GetString(uuid),
-		hypervDynamicMemory: viper.GetBool(hypervDynamicMemory)}
+		hypervDynamicMemory: viper.GetBool(hypervDynamicMemory),
+	}
 
 	fmt.Printf("Starting local Kubernetes %s cluster...\n", viper.GetString(kubernetesVersion))
 	fmt.Println("Starting VM...")

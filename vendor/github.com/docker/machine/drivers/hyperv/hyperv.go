@@ -224,7 +224,7 @@ func (d *Driver) Create() error {
 	log.Infof("Setting VM dynamic memory to %t", d.DynamicMem)
 	if err := cmd("Hyper-V\\Set-VMMemory",
 		"-VMName", d.MachineName,
-		"-DynamicMemoryEnabled", fmt.Sprintf("%t", d.DynamicMem)); err != nil {
+		"-DynamicMemoryEnabled", fmt.Sprintf("$%t", d.DynamicMem)); err != nil {
 		log.Infof("Error setting dynamic memory, %s", err.Error())
 		return err
 	}
